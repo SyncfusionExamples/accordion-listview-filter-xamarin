@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AccordionXamarin"
+             xmlns:syncfusion="clr-namespace:Syncfusion.XForms.Accordion;assembly=Syncfusion.Expander.XForms"
+             xmlns:sfListView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:converter="clr-namespace:AccordionXamarin.Converter"
+             xmlns:helper="clr-namespace:AccordionXamarin.Helper"
+             x:Class="AccordionXamarin.MainPage" Padding="{OnPlatform iOS='0,40,0,0'}">
+
+    <ContentPage.BindingContext>
+        <local:ItemInfoRepository/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:HeightConverter x:Key="HeightConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Behaviors>
+        <helper:Behavior/>
+    </ContentPage.Behaviors>
+    
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"> 
+            <SearchBar x:Name="searchBar" HeightRequest="50"/>
+            <syncfusion:SfAccordion x:Name="OuterAccordion" ExpandMode="SingleOrNone" Margin="5" BindableLayout.ItemsSource="{Binding Info}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                        <syncfusion:AccordionItem x:Name="AccordionItem">
+                            <syncfusion:AccordionItem.Header>
+                                <Grid HeightRequest="50" RowSpacing="0">
+                                    <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                                </Grid>
+                            </syncfusion:AccordionItem.Header>
+                            <syncfusion:AccordionItem.Content>
+                                <sfListView:SfListView x:Name="listView" SelectedItem="{Binding SelectedItem}" HeightRequest="{Binding Varieties, Converter={StaticResource HeightConverter}, ConverterParameter={x:Reference listView}}" ItemSize="50" ItemsSource="{Binding Varieties}" ItemSpacing="1">
+                                    <sfListView:SfListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid RowSpacing="0">
+                                                <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Start" Padding="2"/>
+                                                <Label Grid.Column="1" Text="{Binding Price}" VerticalOptions="Center" HorizontalOptions="Start" Padding="2"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </sfListView:SfListView.ItemTemplate>
+                                </sfListView:SfListView>
+                            </syncfusion:AccordionItem.Content>
+                        </syncfusion:AccordionItem>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </syncfusion:SfAccordion>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
